@@ -1,28 +1,23 @@
 <template>
     <div class="container-part"> <!--//HTML代码、定义页面的区域-->
       <el-form id="form1" class="form-part" :inline="true" :model="formData1"> <!--//定义表ID，表格样式和数据对象，Vue绑定指令-->
-        <el-form-item label="团号" label-width="70">
-          <el-input id="tbx_1e__number" v-model="formData1.tbx_1e__number" placeholder="查询"  MaxLength="20"
-            clearable>
-          </el-input>
+        <el-form-item label="月份" label-width="70"><!--//定义表中的标签，标签的宽度（像素）-->
+          <el-cascader id="ddl_1e__month" v-model="ddl_1e__month" :options="ddlOptions2" clearable />
+          <!--//创建地区选择器，定义ID，v-model将el-cascader和ID进行双向绑定，options将ddlOptions变量和el-cascader绑定，clearable可以进行清除-->
         </el-form-item>
         <el-form-item label="地区" label-width="70">
           <el-cascader id="ddl_1e__district" v-model="ddl_1e__district" :options="ddlOptions" placeholder="欧洲团" clearable />
         </el-form-item>
-        <el-form-item label="销售" label-width="70">
-          <el-cascader id="ddl_1e__sell" v-model="ddl_1e__cell" :options="ddlOptions5" clearable />
+        <el-form-item label="团号" label-width="70">
+          <el-input id="tbx_1e__number" v-model="formData1.tbx_1e__number" placeholder="模糊查询"  MaxLength="20"
+            clearable>
+          </el-input><!--//为输入框组件进行定义，placeholder为输入框为空时显示一段提示性的灰色占位文字，MaxLength表示最大输入字数-->
         </el-form-item>
         <el-form-item label="操作人" label-width="70">
-          <el-cascader id="ddl_1e__operation" v-model="ddl_1e__operation" :options="ddlOptions3" clearable />
+          <el-cascader id="ddl_1e__operation" v-model="ddl_1e__operation" :options="ddlOptions3" placeholder="请选择" clearable />
         </el-form-item>
         <el-form-item label="领队" label-width="70">
-          <el-cascader id="ddl_1e__guide1" v-model="ddl_1e__guide1" :options="ddlOptions4" clearable />
-        </el-form-item>
-        <el-form-item label="状态" label-width="70">
-          <el-cascader id="ddl_1e__guide" v-model="ddl_1e__guide" :options="ddlOptions1" clearable />
-        </el-form-item>
-        <el-form-item label="航空公司" label-width="70">
-          <el-cascader id="ddl_1e__airport" v-model="ddl_1e__airport" :options="ddlOptions2" clearable />
+          <el-cascader id="ddl_1e__guide" v-model="ddl_1e__guide" :options="ddlOptions1" placeholder="请选择" clearable />
         </el-form-item>
         <el-form-item label="出发日期" label-width="70">
           <el-input id="tbx_1e__arrivedate" v-model="formData1.tbx_1e__arrivedate" placeholder="查询"  MaxLength="20"
@@ -33,6 +28,15 @@
         <el-form-item>
           <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">打印</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">导出到EXCEL</el-button>
+        </el-form-item>
+        <!-- <el-form-item>
+          <el-button type="primary" @click="addData">新增数据</el-button>
+        </el-form-item>  -->
       </el-form>
   
       <!--    动态表格  //20231215★★★-->
@@ -41,6 +45,15 @@
           <el-table-column :prop="col.prop" :label="col.label" :width="col.width" v-if="col.isShow"></el-table-column>
         </template> 
   
+        <!--//link type为链接以及风格，@click="borrowHandle(row)"：这是 Vue 的事件绑定语法，将按钮的点击事件与名为 borrowHandle 的方法进行绑定。
+          当用户点击这个 “借阅” 按钮时，会触发 borrowHandle 方法，并且会将当前行的数据对象 row 作为参数传递给该方法，-->
+        <el-table-column fixed="right" label="操作" width="120"><!--//表格列始终固定在右侧-->
+          <template #default="{ row }">
+            <el-button link type="primary" size="small" @click="editHandle(row)">团详情</el-button>
+            <el-button link type="primary" size="small" @click.prevent="deleteHandle(row)">团支出申请</el-button>
+            <el-button link type="primary" size="small" @click="editHandle1(row)">表格下载</el-button>
+          </template>
+        </el-table-column>
       </el-table>
   
       <!--//实现分页功能-->
@@ -62,6 +75,30 @@
           </span>
         </template>
       </el-dialog>
+
+      <el-dialog title="文件生成下载指南" v-model="dialogVisible1">
+         <div>
+          <!-- 这里复制图片中的内容 -->
+         <h3>飞扬假期国际旅行社ERP系统</h3>
+         <p>文件生成下载</p>
+         <ul>
+          <!-- 省略具体列表项，根据图片内容填充 -->
+         </ul>
+         </div>
+         <template #footer>
+           <el-button @click="dialogVisible1 = false">关闭</el-button>
+          </template>
+      </el-dialog>
+
+      <el-dialog v-model="deleteDialogFormVisible" title="是否删除数据?">
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="deleteDialogFormVisible = false">取消</el-button>
+            <el-button type="danger" @click="deleteCommit">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+  
     </div>
   </template>
   
@@ -86,22 +123,54 @@
     },
   ]
   
-  const ddlOptions5 = [
+  const ddlOptions2 = [
     {
-      value: '销售1',
-      label: '销售1',
+      value: '12月团',
+      label: '12月团',
     },
     {
-      value: '销售2',
-      label: '销售2',
+      value: '11月团',
+      label: '11月团',
     },
     {
-      value: '销售3',
-      label: '销售3',
+      value: '10月团',
+      label: '10月团',
     },
     {
-      value: '销售4',
-      label: '销售4',
+      value: '9月团',
+      label: '9月团',
+    },
+    {
+      value: '8月团',
+      label: '8月团',
+    },
+    {
+      value: '7月团',
+      label: '7月团',
+    },
+    {
+      value: '6月团',
+      label: '6月团',
+    },
+    {
+      value: '5月团',
+      label: '5月团',
+    },
+    {
+      value: '4月团',
+      label: '4月团',
+    },
+    {
+      value: '3月团',
+      label: '3月团',
+    },
+    {
+      value: '2月团',
+      label: '2月团',
+    },
+    {
+      value: '1月团',
+      label: '1月团',
     },
   ]
   
@@ -125,53 +194,27 @@
   ]
   
   const ddlOptions1 = [
-      {
-        value: '全部团',
-        label: '全部团',
-      },
-      {
-        value: '封团',
-        label: '封团',
-      },
-      {
-        value: '进行中',
-        label: '进行中',
-      },
-    ]
-
-    const ddlOptions2 = [
-      {
-        value: '国航 CA',
-        label: '国航 CA',
-      },
-      {
-        value: '东航 MU',
-        label: '东航 MU',
-      },
-      {
-        value: '南航 CZ',
-        label: '南航 CZ',
-      },
-    ]
-
-    const ddlOptions4 = [
-      {
-        value: '领队1',
-        label: '领队1',
-      },
-      {
-        value: '领队2',
-        label: '领队2',
-      },
-      {
-        value: '领队3',
-        label: '领队3',
-      },
-      {
-        value: '领队4',
-        label: '领队4',
-      },
-    ]
+    {
+      value: '领队1',
+      label: '领队1',
+    },
+    {
+      value: '领队2',
+      label: '领队2',
+    },
+    {
+      value: '领队3',
+      label: '领队3',
+    },
+    {
+      value: '领队4',
+      label: '领队4',
+    },
+    {
+      value: '无领队',
+      label: '无领队',
+    },
+  ]
   
   //ref为响应式应用，定义初始状态下要显示的信息
   const showCols = ref(['remark', 'Regiment_number', 'intro', 'price', 'market', 'additional_charge','depart','guide', 'operate', 'ticket',
@@ -302,13 +345,13 @@
   
   const showDialog1 = () => {
   dialogVisible1.value = true;
-  };
-  
+};
+
    const showFileGuide = () => {
      const fileGuideDialog = fileGuideDialog.value;
      fileGuideDialog.showDialog();
    };
-  
+
   const emptyDialogForm = {
     seq: '',
     book_id: '',

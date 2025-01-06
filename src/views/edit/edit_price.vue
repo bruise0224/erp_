@@ -1,40 +1,13 @@
 <template>
   <div class="container-part"> <!--//HTML代码、定义页面的区域-->
-    <el-form id="form1" class="form-part" :inline="true" :model="formData1">
-    <el-form-item label="月份" label-width="70"><!--//定义表中的标签，标签的宽度（像素）-->
-          <el-cascader id="ddl_1e__month" v-model="ddl_1e__month" :options="ddlOptions2" clearable />
-          <!--//创建地区选择器，定义ID，v-model将el-cascader和ID进行双向绑定，options将ddlOptions变量和el-cascader绑定，clearable可以进行清除-->
-        </el-form-item>
-        <el-form-item label="地区" label-width="70">
-          <el-cascader id="ddl_1e__district" v-model="ddl_1e__district" :options="ddlOptions" placeholder="欧洲团" clearable />
-        </el-form-item>
-        <el-form-item label="团号" label-width="70">
-          <el-input id="tbx_1e__number" v-model="formData1.tbx_1e__number" placeholder="模糊查询"  MaxLength="20"
-            clearable>
-          </el-input><!--//为输入框组件进行定义，placeholder为输入框为空时显示一段提示性的灰色占位文字，MaxLength表示最大输入字数-->
-        </el-form-item>
-        <el-form-item label="操作人" label-width="70">
-          <el-cascader id="ddl_1e__operation" v-model="ddl_1e__operation" :options="ddlOptions3" placeholder="请选择" clearable />
-        </el-form-item>
-        <el-form-item label="领队" label-width="70">
-          <el-cascader id="ddl_1e__guide" v-model="ddl_1e__guide" :options="ddlOptions1" placeholder="请选择" clearable />
-        </el-form-item>
-        <el-form-item label="出发日期" label-width="70">
-          <el-input id="tbx_1e__arrivedate" v-model="formData1.tbx_1e__arrivedate" placeholder="查询"  MaxLength="20"
-            clearable>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">打印</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">导出到EXCEL</el-button>
-        </el-form-item>
-        <router-link to="/add/addtuan"><button>建设新团</button></router-link>
+    <el-form id="form1" class="form-part" :inline="true" :model="formData1"> <!--//定义表ID，表格样式和数据对象，Vue绑定指令-->
+      <el-form-item label="月份" label-width="70"><!--//定义表中的标签，标签的宽度（像素）-->
+        <el-cascader id="ddl_1e__month" v-model="ddl_1e__month" :options="ddlOptions2" clearable />
+        <!--//创建地区选择器，定义ID，v-model将el-cascader和ID进行双向绑定，options将ddlOptions变量和el-cascader绑定，clearable可以进行清除-->
+      </el-form-item>
+      <el-form-item label="地区" label-width="70">
+        <el-cascader id="ddl_1e__district" v-model="ddl_1e__district" :options="ddlOptions" placeholder="欧洲团" clearable />
+      </el-form-item>
     </el-form>
 
     <!--    动态表格  //20231215★★★-->
@@ -43,18 +16,18 @@
         <el-table-column :prop="col.prop" :label="col.label" :width="col.width" v-if="col.isShow"></el-table-column>
       </template> 
 
+      <!--//link type为链接以及风格，@click="borrowHandle(row)"：这是 Vue 的事件绑定语法，将按钮的点击事件与名为 borrowHandle 的方法进行绑定。
+        当用户点击这个 “借阅” 按钮时，会触发 borrowHandle 方法，并且会将当前行的数据对象 row 作为参数传递给该方法，-->
       <el-table-column fixed="right" label="操作" width="120"><!--//表格列始终固定在右侧-->
         <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="editHandle(row)">团信息</el-button>
-          <router-link to="/add/xiugaituan"><button>修改团信息</button></router-link>
+          <el-button link type="primary" size="small" @click="editHandle(row)">修改价格信息</el-button>
         </template>
       </el-table-column>
-
     </el-table>
 
     <!--//实现分页功能-->
     <el-pagination id="pagination1" class="page-part" v-model:current-page="currentPage1" background
-      v-model:page-size="pageSize1" :page-sizes="[100, 200, 300]" layout="total,sizes, prev, pager, next, jumper"
+      v-model:page-size="pageSize1" :page-sizes="[20, 50, 100]" layout="total,sizes, prev, pager, next, jumper"
       :total="totalCount1" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
 
     <!--//实现新增数据页面功能-->
@@ -67,32 +40,9 @@
       <template #footer><!--//具名插槽，定义对话框底部的信息-->
         <span class="dialog-footer">
           <el-button type="primary" @click="dialogCancel">取消</el-button>
+          <el-button type="primary" @click="dialogCommit">确认</el-button>
         </span>
       </template>
-    </el-dialog>
-
-    <el-dialog v-model="deleteDialogFormVisible" title="是否删除数据?">
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="deleteDialogFormVisible = false">取消</el-button>
-          <el-button type="danger" @click="deleteCommit">确认</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <el-dialog v-model="borrowDialogVisible" title="借阅信息" @close="borrowClose">
-      <el-form v-model="borrowDFModel" label-width="150px">
-        <el-form-item label="借阅天数:">
-          <el-row>
-            <el-col :span="12">
-              <el-input v-model="borrow_days" />
-            </el-col>
-            <el-col :span="6" :offset="6">
-              <el-button type="primary" @click="borrowCommit">借阅</el-button>
-            </el-col>
-          </el-row>
-        </el-form-item>
-      </el-form>
     </el-dialog>
 
   </div>
@@ -108,153 +58,80 @@ const route = new useRoute()
 
 
 const ddlOptions = [
-    {
-      value: '欧洲地区',
-      label: '欧洲地区',
-      //子选项的功能-->
-    },
-    {
-      value: '澳洲地区',
-      label: '澳洲地区',
-    },
-  ]
-  
-  const ddlOptions2 = [
-    {
-      value: '12月团',
-      label: '12月团',
-    },
-    {
-      value: '11月团',
-      label: '11月团',
-    },
-    {
-      value: '10月团',
-      label: '10月团',
-    },
-    {
-      value: '9月团',
-      label: '9月团',
-    },
-    {
-      value: '8月团',
-      label: '8月团',
-    },
-    {
-      value: '7月团',
-      label: '7月团',
-    },
-    {
-      value: '6月团',
-      label: '6月团',
-    },
-    {
-      value: '5月团',
-      label: '5月团',
-    },
-    {
-      value: '4月团',
-      label: '4月团',
-    },
-    {
-      value: '3月团',
-      label: '3月团',
-    },
-    {
-      value: '2月团',
-      label: '2月团',
-    },
-    {
-      value: '1月团',
-      label: '1月团',
-    },
-  ]
-  
-  const ddlOptions3 = [
-    {
-      value: '操作人1',
-      label: '操作人1',
-    },
-    {
-      value: '操作人2',
-      label: '操作人2',
-    },
-    {
-      value: '操作人3',
-      label: '操作人3',
-    },
-    {
-      value: '操作人4',
-      label: '操作人4',
-    },
-  ]
-  
-  const ddlOptions1 = [
-    {
-      value: '领队1',
-      label: '领队1',
-    },
-    {
-      value: '领队2',
-      label: '领队2',
-    },
-    {
-      value: '领队3',
-      label: '领队3',
-    },
-    {
-      value: '领队4',
-      label: '领队4',
-    },
-    {
-      value: '无领队',
-      label: '无领队',
-    },
-  ]
+  {
+    value: '欧洲地区',
+    label: '欧洲地区',
+    //子选项的功能-->
+  },
+  {
+    value: '澳洲地区',
+    label: '澳洲地区',
+  },
+]
+
+const ddlOptions2 = [
+  {
+    value: '12月团',
+    label: '12月团',
+  },
+  {
+    value: '11月团',
+    label: '11月团',
+  },
+  {
+    value: '10月团',
+    label: '10月团',
+  },
+  {
+    value: '9月团',
+    label: '9月团',
+  },
+  {
+    value: '8月团',
+    label: '8月团',
+  },
+  {
+    value: '7月团',
+    label: '7月团',
+  },
+  {
+    value: '6月团',
+    label: '6月团',
+  },
+  {
+    value: '5月团',
+    label: '5月团',
+  },
+  {
+    value: '4月团',
+    label: '4月团',
+  },
+  {
+    value: '3月团',
+    label: '3月团',
+  },
+  {
+    value: '2月团',
+    label: '2月团',
+  },
+  {
+    value: '1月团',
+    label: '1月团',
+  },
+]
 
 //ref为响应式应用，定义初始状态下要显示的信息
-const showCols = ref(['remark', 'Regiment_number', 'intro', 'price', 'market', 'additional_charge','depart','guide', 'operate', 'ticket',
-  'submission_date', 'submission_nation','submission_people', 'seat', 'residue', 'forecast', 'arrived', 'statu',])
-  //prop代表属性名，isShow为布尔值，用于表示初始状态下是否显示
-  //数据列  //20231215★★★
-  const colOptions = ref([
-    { prop: 'remark', label: '备注', isShow: true, width: '', formatter: '' },
-    { prop: 'Regiment_number', label: '团号', isShow: true, width: '', formatter: '' },
-    { prop: 'intro', label: '行程简介（团期）', isShow: true, width: '', formatter: '' },
-    { prop: 'price', label: '价格', isShow: true, width: '', formatter: '' },
-    { prop: 'market', label: '市场价', isShow: true, width: '', formatter: '' },
-    { prop: 'additional_charge', label: '附加费', isShow: true, width: '', formatter: '' },
-    { prop: 'depart', label: '出发地', isShow: true, width: '', formatter: '' },
-    { prop: 'guide', label: '领队', isShow: true, width: '', formatter: '' },
-    { prop: 'operate', label: '操作', isShow: true, width: '', formatter: '' },
-    { prop: 'ticket', label: '票务', isShow: true, width: '', formatter: '' },
-    { prop: 'submission_date', label: '送签日', isShow: true, width: '', formatter: '' },
-    { prop: 'submission_nation', label: '送签国', isShow: true, width: '', formatter: '' },
-    { prop: 'submission_people', label: '送签员', isShow: true, width: '', formatter: '' },
-    { prop: 'seat', label: '席位', isShow: true, width: '', formatter: '' },
-    { prop: 'residue', label: '余位', isShow: true, width: '', formatter: '' },
-    { prop: 'forecast', label: '预报', isShow: true, width: '', formatter: '' },
-    { prop: 'arrived', label: '已到', isShow: true, width: '', formatter: '' },
-    { prop: 'status', label: '状态', isShow: true, width: '', formatter: '' },
-  ])
-
-//下拉框被备选项  //20231215★★★
-// const showColoptions = [
-//   {
-//     value: 'district',
-//     label: '地区',
-//     // isShow: true,
-//   },
-//   { value: 'Regiment_number', label: '团号', },
-//   { value: 'guide', label: '领队', },
-//   { value: 'number_of_tourists', label: '游客人数', },
-//   { value: 'arrive_date', label: '到达日期', },
-//   { value: 'departure_date', label: '离开日期', },
-//   // { value: 'book_class', label: '地区', },
-//   // { value: 'margin_num', label: '到达日期', },
-//   // { value: 'collect_num', label: '离开日期', },
-//   // { value: 'borrow_num', label: '借阅量', },
-// ]
+const showCols = ref(['Regiment_number', 'price','intro','market','status','special'])
+//prop代表属性名，isShow为布尔值，用于表示初始状态下是否显示
+//数据列  //20231215★★★
+const colOptions = ref([
+  { prop: 'Regiment_number', label: '团号', isShow: true, width: '', formatter: '' },
+  { prop: 'intro', label: '行程简介（团期）', isShow: true, width: '', formatter: '' },
+  { prop: 'special', label: '特色亮点', isShow: true, width: '', formatter: '' },
+  { prop: 'price', label: '价格', isShow: true, width: '', formatter: '' },
+  { prop: 'market', label: '市场价', isShow: true, width: '', formatter: '' }, 
+  { prop: 'status', label: '状态', isShow: true, width: '', formatter: '' },
+])
 
 ////20231215★★★
 const hideCol = (value) => {
@@ -275,13 +152,6 @@ const hideCol = (value) => {
         }
       }
     }
-    // value.forEach((index, item) => {
-    //   // colOptions.value.forEach((index1, item1) => {
-    //   //   if (item1.prop == item) {
-    //   //     item1.isShow =true
-    //   //   }
-    //   // })
-    // })
   }
   // console.log(colOptions.value)
 }
@@ -293,81 +163,30 @@ onMounted(() => {
 const ddl_1e__district =ref()
 const colList = ref(
   [
-  [
-      { prop: 'remark', label: '备注'},
-      { prop: 'Regiment_number', label: '团号'},
-      { prop: 'intro', label: '行程简介（团期）'},
-      { prop: 'price', label: '价格'},
-      { prop: 'market', label: '市场价'},
-      { prop: 'depart', label: '出发地'},
-      { prop: 'additional_charge', label: '附加费'},
-      { prop: 'guide', label: '领队'},
-      { prop: 'operate', label: '操作'},
-      { prop: 'ticket', label: '票务'},
-      { prop: 'submission_date', label: '送签日'},
-      { prop: 'submission_nation', label: '送签国'},
-      { prop: 'submission_people', label: '送签员'},
-      { prop: 'seat', label: '席位'},
-      { prop: 'residue', label: '余位'},
-      { prop: 'forecast', label: '预报'},
-      { prop: 'arrived', label: '已到'},
-      { prop: 'status', label: '状态'},
-    ]
+    { prop: 'remark', label: '备注'},
+    { prop: 'Regiment_number', label: '团号'},
+    { prop: 'intro', label: '行程简介（团期）'},
+    { prop: 'price', label: '价格'},
+    { prop: 'market', label: '市场价'},
+    { prop: 'depart', label: '出发地'},
+    { prop: 'additional_charge', label: '附加费'},
+    { prop: 'guide', label: '领队'},
+    { prop: 'operate', label: '操作'},
+    { prop: 'ticket', label: '票务'},
+    { prop: 'submission_date', label: '送签日'},
+    { prop: 'submission_nation', label: '送签国'},
+    { prop: 'submission_people', label: '送签员'},
+    { prop: 'seat', label: '席位'},
+    { prop: 'residue', label: '余位'},
+    { prop: 'forecast', label: '预报'},
+    { prop: 'arrived', label: '已到'},
+    { prop: 'status', label: '状态'},
   ]
 )
 //响应式引用
 const borrowDialogVisible = ref(false)
 const borrow_days = ref()
 const borrowDFModel = ref()
-//收藏
-// const collectHandle = (row) => {
-//   const rowData = JSON.parse(JSON.stringify(row))
-//   let params = {
-//     user_id: pulicStore.user_id,
-//     user_name: pulicStore.user_name,
-//     book_id: rowData.book_id,
-//     book_name: rowData.book_name,
-//   }
-//   axios.post('/BOOK_INFO/collectHandle', params)
-//     .then(res => {
-//       if (res.status == 200) {
-//         //console.log("res:", res);
-//         if (res.data.code == 200) {
-//           ElMessage({
-//             showClose: false,
-//             message: res.data.data,
-//             type: 'success',
-//           })
-//         } else if (
-//           res.data.code == "500"
-//         ) {
-//           ElMessage({
-//             showClose: true,
-//             message: '执行失败' + res.data.msg,
-//             type: 'error',
-//           })
-//         }
-//       } else if (res.status == 500) {
-//         ElMessage({
-//           showClose: true,
-//           message: '执行失败' + res.data.msg,
-//           type: 'error',
-//         })
-//       }
-//     })
-// }
-// const borrowHandle = (row) => {
-//   if (row.margin_num <= 1) {
-//     ElMessage({
-//       showClose: false,
-//       message: '馆中只剩一本,不能借阅',
-//       type: 'info',
-//     })
-//     return
-//   }
-//   borrowDialogVisible.value = true
-//   borrowDFModel.value = row
-// }
 const borrowCommit = () => {
   let params = {
     user_id: pulicStore.user_id,
@@ -411,9 +230,18 @@ const borrowClose = () => {
 
 const formData1 = ref({
   tbx_1e__book_number: '',
-  tbx_1e__arrive: '',
-  tbx_1e__guide: '',
+  tbx_1e__guide: ''
+  ,
 })
+
+const showDialog1 = () => {
+dialogVisible1.value = true;
+};
+
+ const showFileGuide = () => {
+   const fileGuideDialog = fileGuideDialog.value;
+   fileGuideDialog.showDialog();
+ };
 
 const emptyDialogForm = {
   seq: '',
@@ -565,7 +393,14 @@ const addCommit = () => {
 
 const editHandle = (row) => {
   //console.log("行数据row", row);
-  dialogTitle.value = '编辑数据'
+  dialogTitle.value = '团详情'
+  dialogVisible.value = true
+  const rowStr = JSON.stringify(row);
+  dialogForm.value = JSON.parse(rowStr);
+}
+const editHandle1 = (row) => {
+  //console.log("行数据row", row);
+  dialogTitle.value ='数据详情'
   dialogVisible.value = true
   const rowStr = JSON.stringify(row);
   dialogForm.value = JSON.parse(rowStr);
@@ -664,6 +499,7 @@ const deleteCommit = () => {
 formData1.value.tbx_1e__number = route.query.number;
 formData1.value.tbx_1e__arrive = route.query.arrive;
 formData1.value.tbx_1e__guide = route.query.guide;
+formData1.value.tbx_1e__arrivedate = route.query.arrivedate;
 
 </script>
 

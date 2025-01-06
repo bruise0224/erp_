@@ -1,30 +1,35 @@
 <template>
     <div class="container-part">
         <el-form id="form1" class="form-part" :inline="true" :model="formData1">
-                <el-form-item label="酒店名称" label-width="70">
-                       <el-input id="reader_name" v-model="formData1.reader_name" placeholder="模糊查询" MaxLength="20" clearable></el-input>
-                    </el-form-item>
-
+                <el-form-item label="姓" label-width="70">
+                       <el-input id="reader_surname" v-model="formData1.reader_surname" MaxLength="20" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="名" label-width="70">
+                       <el-input id="reader_name" v-model="formData1.reader_name" MaxLength="20" clearable></el-input>
+                </el-form-item>
                     <el-form-item>
                         <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="addData">新增数据</el-button>
                     </el-form-item>
         </el-form>
 
         <el-table id="table1" class="table-part" :data="tableData1" border>
-            <el-table-column prop="seq" label="酒店名称" ></el-table-column>
-            <el-table-column prop="reader_id" label="所在城市" ></el-table-column>
-            <el-table-column prop="reader_name" label="单房价" ></el-table-column>
-            <el-table-column prop="in_time" label="双房价" :formatter="formatCellDate" width="170"></el-table-column>
-            <el-table-column prop="out_time" label="星级" :formatter="formatCellDate" width="170"></el-table-column>
-            <el-table-column prop="read_time" label="联系方式" ></el-table-column>
+            <el-table-column prop="name" label="姓名" ></el-table-column>
+            <el-table-column prop="Host_regiment" label="所在团" ></el-table-column>
+            <el-table-column prop="Ownership_sale" label="所属销售" ></el-table-column>
+            <el-table-column prop="Authorized_agency" label="委托社" ></el-table-column>
+            <el-table-column prop="Placeholder_mode" label="占位方式" ></el-table-column>
+            <el-table-column prop="sex" label="性别" ></el-table-column>
+            <el-table-column prop="birthday" label="出生日期" ></el-table-column>
+            <el-table-column prop="Tip_payment" label="小费缴纳" ></el-table-column>
+            <el-table-column prop="passporally" label="护照地" ></el-table-column>
+            <el-table-column prop="intermodal" label="联运地" ></el-table-column>
+            <el-table-column prop="tel" label="联系电话" ></el-table-column>
+            <el-table-column prop="Entry_time" label="录入时间" ></el-table-column>
 
             <el-table-column fixed="right" label="操作" width="120">
                 <template #default="{ row }">
-                    <el-button link type="primary" size="small" @click="editHandle(row)">编辑</el-button>
-                    <el-button link type="danger" size="small" @click.prevent="deleteHandle(row)">删除</el-button>
+                    <el-button link type="primary" size="small" @click="editHandle(row)">游客详细信息</el-button>
+                    <el-button link type="danger" size="small" @click.prevent="deleteHandle(row)">移除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -41,13 +46,12 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="dialogCancel">取消</el-button>
-                    <el-button type="primary" @click="dialogCommit">确认</el-button>
+                    <el-button type="primary" @click="dialogCancel">确认</el-button>
                 </span>
             </template>
         </el-dialog>
 
-        <el-dialog v-model="deleteDialogFormVisible" title="是否删除数据?">
+        <el-dialog v-model="deleteDialogFormVisible" title="是否移除数据?">
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="deleteDialogFormVisible = false">取消</el-button>
@@ -69,12 +73,18 @@ onMounted(() => {
 
 const colList = ref(
     [
-      { prop: 'seq', label: '酒店名称' },
-      { prop: 'reader_id', label: '所在城市' },
-      { prop: 'reader_name', label: '单房价' },
-      { prop: 'in_time', label: '双房价' },
-      { prop: 'out_time', label: '星级' },
-      { prop: 'read_time', label: '联系方式' },
+      { prop: 'name', label: '姓名' },
+      { prop: 'Host_regiment', label: '所在团' },
+      { prop: 'Ownership_sale', label: '所属销售' },
+      { prop: 'Authorized_agency', label: '委托社' },
+      { prop: 'Placeholder_mode', label: '占位方式' },
+      { prop: 'sex', label: '性别' },
+      { prop: 'birthday', label: '出生日期' },
+      { prop: 'Tip_payment', label: '小费缴纳' },
+      { prop: 'passporally', label: '护照地' },
+      { prop: 'intermodal', label: '联运地' },
+      { prop: 'tel', label: '联系电话' },
+      { prop: 'Entry_time', label: '录入时间' },
 
     ]
 )
