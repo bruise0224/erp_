@@ -1,28 +1,62 @@
 <template>
   <el-container class="layout-container-demo">
-    <el-aside class="myMenu" :width="myMenuWidth">
-      <el-scrollbar>
-        <div class="adminMenu" v-show="showMenu">
+    <el-aside class="myMenu" :width="myMenuWidth"><!--侧边栏，myMenuWidth为变量，控制宽度-->
+      <el-scrollbar><!--滚动功能-->
+        <div class="adminMenu" v-show="showMenu"><!--v-show根据表达式的值来控制元素的显示与隐藏，collapse为折叠功能-->
           <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" :collapse="isCollapse"
             background-color="#ffffff" text-color="rgb(22, 43, 100)" active-text-color="rgb(87, 202, 235)" router
             @open:="onOpen" @close:="onClose">
-            <el-menu-item>
-              <template #title><span class="logo">旅行社管理系统</span></template>
+            <el-menu-item><!--显示第一个标题-->
+              <template #title><span class="logo">旅行社管理系统</span></template><!--插槽，定义标题-->
             </el-menu-item>
-            <el-menu-item index="/welcome">
+            <el-menu-item index="/welcome"><!--链接Welcome模块-->
               <el-icon>
                 <briefcase></briefcase>
               </el-icon>
-              <template #title><span>首页</span></template>
+              <template #title><span>工作提醒</span></template>
             </el-menu-item>
-            <el-sub-menu index="/USER_INFO">
+
+            <el-sub-menu index="/AMEND_INFO">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>修改信息</span>
+              </template>
+              <el-menu-item index="/AMEND_INFO/AMEND_INFO">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>旅行团信息修改</template>
+              </el-menu-item>
+              <!--COLLECT_INFO##el-menu-item##-->
+            </el-sub-menu>
+            <!--###el-sub-menu###-->
+
+            <!-- 签证模版 -->
+            <el-sub-menu index="/VISA_TEMPLATE">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>材料打印模块</span>
+              </template>
+              <el-menu-item index="/VISA_TEMPLATE/VISA_TEMPLATE">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>签证表模版</template>
+              </el-menu-item>
+            </el-sub-menu>
+
+            <el-sub-menu index="/USER_INFO"><!--父级菜单-->
               <template #title>
                 <el-icon>
                   <grid></grid>
                 </el-icon>
                 <span>用户管理</span>
               </template>
-              <el-menu-item index="/USER_INFO/USER_INFO">
+              <el-menu-item index="/USER_INFO/USER_INFO"><!--该子菜单项时要跳转去的具体路由地址-->
                 <el-icon>
                   <location></location>
                 </el-icon>
@@ -31,7 +65,94 @@
               <!--USER_INFO##el-menu-item##-->
             </el-sub-menu>
 
-            <!-- <el-sub-menu index="/BOOK_INFO">
+            <el-sub-menu index="/Group_list"><!--父级菜单-->
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>团列表</span>
+              </template>
+              <el-menu-item index="/Group_list/Group_list"><!--该子菜单项时要跳转去的具体路由地址-->
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>团列表</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+            <el-sub-menu index="/yuwei_list"><!--父级菜单-->
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>余位表</span>
+              </template>
+              <el-menu-item index="/yuwei_list/yuwei_list"><!--该子菜单项时要跳转去的具体路由地址-->
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>团余位表</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+            <el-sub-menu index="/edit"><!--父级菜单-->
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>信息修改</span>
+              </template>
+              <el-menu-item index="/edit/edit_submit">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>送签修改</template>
+              </el-menu-item>
+              <el-menu-item index="/edit/edit_plan">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>行程修改</template>
+              </el-menu-item>
+              <el-menu-item index="/edit/edit_operate">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>操作修改</template>
+              </el-menu-item>
+              <el-menu-item index="/edit/edit_guide">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>领票修改</template>
+              </el-menu-item>
+              <el-menu-item index="/edit/edit_price">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>团价修改</template>
+              </el-menu-item>
+            </el-sub-menu>
+
+            <el-sub-menu index="/data_collect"><!--父级菜单-->
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>数据统计</span>
+              </template>
+              <el-menu-item index="/data_collect/data_collect"><!--该子菜单项时要跳转去的具体路由地址-->
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>数据统计</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+            <el-sub-menu index="/BOOK_INFO">
               <template #title>
                 <el-icon>
                   <grid></grid>
@@ -44,117 +165,21 @@
                 </el-icon>
                 <template #title>旅行团信息</template>
               </el-menu-item>
-            </el-sub-menu> -->
-
-            <el-sub-menu index="/edit"><!--父级菜单-->
-              <template #title>
-                <el-icon>
-                  <grid></grid>
-                </el-icon>
-                <span>资源维护</span>
-              </template>
-              <el-menu-item index="/edit/edit_hotel">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>酒店</template>
-              </el-menu-item>
-              <el-menu-item index="/edit/edit_scenic">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>景点</template>
-              </el-menu-item>
-              <el-menu-item index="/edit/edit_restaurant">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>餐厅</template>
-              </el-menu-item>
-              <el-menu-item index="/edit/edit_car">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>车队</template>
-              </el-menu-item>
-              <el-menu-item index="/edit/edit_guide">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>领队</template>
-              </el-menu-item>
-              <el-menu-item index="/edit/edit_liaisons">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>联络人</template>
-              </el-menu-item>
+              <!--BOOK_INFO##el-menu-item##-->
             </el-sub-menu>
-
-            <el-sub-menu index="/manage"><!--父级菜单-->
+            <el-sub-menu index="/BORROW_INFO">
               <template #title>
                 <el-icon>
                   <grid></grid>
                 </el-icon>
-                <span>基础信息</span>
-              </template>
-              <el-menu-item index="/manage/manage_submission">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>送签社管理</template>
-              </el-menu-item>
-              <el-menu-item index="/manage/manage_city">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>城市管理</template>
-              </el-menu-item>
-              <el-menu-item index="/manage/manage_star">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>星级管理</template>
-              </el-menu-item>
-              <el-menu-item index="/manage/manage_embassy">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>使馆管理</template>
-              </el-menu-item>
-            </el-sub-menu>
-
-            <el-sub-menu index="/fapiaoshangchuan">
-              <template #title>
-                <el-icon>
-                  <grid></grid>
-                </el-icon>
-                <span>发票上传</span>
-              </template>
-              <el-menu-item index="/fapiaoshangchuan/fapiaoshangchuan">
-                <el-icon>
-                  <location></location>
-                </el-icon>
-                <template #title>发票上传</template>
-              </el-menu-item>
-              <!--USER_INFO##el-menu-item##-->
-            </el-sub-menu>
-
-
-
-            <!-- <el-sub-menu index="/BORROW_INFO">
-              <template #title>
-                <el-icon>
-                  <grid></grid>
-                </el-icon>
-                <span>资源维护与添加</span>
+                <span>我的审批</span>
               </template>
               <el-menu-item index="/BORROW_INFO/BORROW_INFO">
                 <el-icon>
                   <location></location>
                 </el-icon>
-                <template #title>酒店信息</template>
-              </el-menu-item> -->
+                <template #title>我的审批</template>
+              </el-menu-item>
               <!-- <el-menu-item index="/BORROW_INFO/PRE_BORROW_INFO">
                 <el-icon>
                   <location></location>
@@ -162,22 +187,23 @@
                 <template #title>借阅意向清单</template>
               </el-menu-item> -->
               <!--BORROW_INFO##el-menu-item##-->
-            <!-- </el-sub-menu>
+            </el-sub-menu>
             <el-sub-menu index="/VISIT_INFO">
               <template #title>
                 <el-icon>
                   <grid></grid>
                 </el-icon>
-                <span>资源添加</span>
+                <span>查找游客</span>
               </template>
               <el-menu-item index="/VISIT_INFO/VISIT_INFO">
                 <el-icon>
                   <location></location>
                 </el-icon>
-                <template #title>酒店添加</template>
-              </el-menu-item> -->
+                <template #title>查找游客信息</template>
+              </el-menu-item>
               <!--VISIT_INFO##el-menu-item##-->
-            <!-- </el-sub-menu> -->
+            </el-sub-menu>
+            
             <!-- <el-sub-menu index="/DISTRIBUTION_INFO">
               <template #title>
                 <el-icon>
@@ -193,20 +219,21 @@
               </el-menu-item>
             </el-sub-menu> -->
             <!--DISTRIBUTION_INFO##el-menu-item##-->
-            <!-- <el-sub-menu index="/COLLECT_INFO">
+            <el-sub-menu index="/COLLECT_INFO">
               <template #title>
                 <el-icon>
                   <grid></grid>
                 </el-icon>
-                <span>基础信息</span>
+                <span>搜更多团</span>
               </template>
               <el-menu-item index="/COLLECT_INFO/COLLECT_INFO">
                 <el-icon>
                   <location></location>
                 </el-icon>
-                <template #title>送签社管理</template>
+                <template #title>搜更多团</template>
               </el-menu-item>
-            </el-sub-menu> -->
+              <!--COLLECT_INFO##el-menu-item##-->
+            </el-sub-menu>
             <!--###el-sub-menu###-->
 
           </el-menu>
@@ -224,7 +251,7 @@
               <el-icon>
                 <briefcase></briefcase>
               </el-icon>
-              <template #title><span>首页</span></template>
+              <template #title><span>工作提醒</span></template>
             </el-menu-item>
 
             <el-sub-menu v-for="menuSub in menuData" :index="menuSub.id">
@@ -330,10 +357,10 @@ export default {
       }
       axios.post('/USER_INFO/logout', params)
         .then(res => {})
-      router.push('/Login')
+      router.push('/Login')//退出后回到登录页面
     }
     const isExpand = ref(true)
-    const foldHandle = () => {
+    const foldHandle = () => {//菜单折叠与展开
       isExpand.value = !isExpand.value;
       isCollapse.value = !isCollapse.value;
     }
@@ -378,7 +405,7 @@ export default {
     const activeTab = ref('/welcome')
     const editableTabs = ref([
       {
-        title: '首页',
+        title: '工作提醒',
         name: '/welcome',
       }
     ])

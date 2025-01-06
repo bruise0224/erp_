@@ -1,32 +1,11 @@
 <template>
   <div class="container-part">
     <el-form id="form1" class="form-part" :inline="true" :model="formData1">
-      <el-form-item label="酒店名称" label-width="70">
-        <el-input id="txb_1L__book_name" v-model="formData1.txb_1L__book_name" placeholder="模糊查询" MaxLength="20"
-          clearable></el-input>
-      </el-form-item>
-      <el-form-item label="所在城市" label-width="70">
-        <el-input id="txb_1L__reader_name" v-model="formData1.txb_1L__reader_name" placeholder="模糊查询" MaxLength="20"
-          clearable></el-input>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="addData">新增数据</el-button>
+      <el-form-item label="审批列表" label-width="70">
       </el-form-item>
     </el-form>
 
     <el-table id="table1" class="table-part" :data="tableData1" border>
-      <el-table-column label='图片'>
-        <template #default="scope">
-          <div style="display: flex; align-items: center">
-            <el-image style="width: 100px; height: 100px" :src="(scope.row.book_name == '' || scope.row.book_name == null || scope.row.book_name == undefined || (!scope.row.book_name.toLowerCase().endsWith('.jpg') && !scope.row.book_name.toLowerCase().endsWith('.jpeg') && !scope.row.book_name.toLowerCase().endsWith('.png') && !scope.row.book_name.toLowerCase().endsWith('.jif') && !scope.row.book_name.toLowerCase().endsWith('.bmp'))) ?
-              '' : require('@/assets/img/' + scope.row.book_name)" fit="fit" />
-          </div>
-        </template>
-      </el-table-column>
 
       <!-- v-for展示表格列↓ -->
       <template v-for="col in colList">
@@ -37,20 +16,13 @@
       <!-- 操作按钮列↓ -->
       <el-table-column fixed="right" label="操作" width="120"><!-- fixed为固定在右侧 -->
         <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="returnHandle(row)">修改</el-button>
-          <el-button link type="primary" size="small" @click="payHandle(row)">删除</el-button>
+          <el-button link type="primary" size="small" @click="returnHandle(row)">通过</el-button>
+          <el-button link type="danger" size="small" @click="payHandle(row)">退回</el-button>
           <!-- <el-button link type="primary" size="small" @click="editHandle(row)">编辑</el-button> -->
           <!-- <el-button link type="danger" size="small" @click.prevent="deleteHandle(row)">删除</el-button> -->
         </template>
       </el-table-column>
       <!-- 配置显示列↓ -->
-      <el-table-column label="配置列" width="200">
-        <template #header>
-          <el-select v-model="showCols" multiple collapse-tags placeholder="选择显示列" style="width: 240px" @change="hideCol">
-            <el-option v-for="item in showColoptions" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </template>
-      </el-table-column>
     </el-table>
       <!-- 实现分页的功能 -->
     <el-pagination id="pagination1" class="page-part" v-model:current-page="currentPage1" background
@@ -94,37 +66,37 @@ const showCols = ref([
 
 //表格列  展示之前按no排序;
 const colList = ref([
-  { no: 0, prop: 'seq', label: '酒店名称', isShow: false, width: '', formatter: '', },
-  { no: 0, prop: 'book_name', label: '所在城市', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'reader_name', label: '单房价', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'borrow_time', label: '双房价', isShow: true, width: 170, formatter: 'formatCellDate', },
-  { no: 0, prop: 'return_time', label: '星级', isShow: true, width: 170, formatter: 'formatCellDate', },
-  { no: 0, prop: 'borrow_days', label: '联系电话', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'returned', label: '联系传真', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'is_delayed', label: '邮箱', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'delayed_hour', label: '酒店地址', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'delayed_cost', label: '网址', isShow: true, width: '', formatter: '', },
-  { no: 0, prop: 'remark', label: '备注', isShow: false, width: '', formatter: '', },
-  { no: 0, prop: 'book_id', label: 'ID', isShow: false, width: '', formatter: '', },
-  { no: 0, prop: 'reader_id', label: '其他信息', isShow: false, width: '', formatter: '', },
+  { no: 0, prop: 'seq', label: '', isShow: false, width: '', formatter: '', },
+  { no: 0, prop: 'book_name', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'reader_name', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'borrow_time', label: '', isShow: true, width: 170, formatter: 'formatCellDate', },
+  { no: 0, prop: 'return_time', label: '', isShow: true, width: 170, formatter: 'formatCellDate', },
+  { no: 0, prop: 'borrow_days', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'returned', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'is_delayed', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'delayed_hour', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'delayed_cost', label: '', isShow: true, width: '', formatter: '', },
+  { no: 0, prop: 'remark', label: '', isShow: false, width: '', formatter: '', },
+  { no: 0, prop: 'book_id', label: '', isShow: false, width: '', formatter: '', },
+  { no: 0, prop: 'reader_id', label: '', isShow: false, width: '', formatter: '', },
 
 ])
 
 //配置显示列选择器
 const showColoptions = [
-  { no: 0, value: 'seq', label: '酒店名称', },
-  { no: 0, value: 'book_name', label: '所在城市', },
-  { no: 0, value: 'reader_name', label: '单房价', },
-  { no: 0, value: 'borrow_time', label: '双房价', },
-  { no: 0, value: 'return_time', label: '星级', },
-  { no: 0, value: 'borrow_days', label: '联系电话', },
-  { no: 0, value: 'returned', label: '联系传真', },
-  { no: 0, value: 'is_delayed', label: '邮箱', },
-  { no: 0, value: 'delayed_hour', label: '酒店地址', },
-  { no: 0, value: 'delayed_cost', label: '网址', },
-  { no: 0, value: 'remark', label: '备注', },
-  { no: 0, value: 'book_id', label: 'ID', },
-  { no: 0, value: 'reader_id', label: '其他信息', },
+  { no: 0, value: 'seq', label: '', },
+  { no: 0, value: 'book_name', label: '', },
+  { no: 0, value: 'reader_name', label: '', },
+  { no: 0, value: 'borrow_time', label: '', },
+  { no: 0, value: 'return_time', label: '', },
+  { no: 0, value: 'borrow_days', label: '', },
+  { no: 0, value: 'returned', label: '', },
+  { no: 0, value: 'is_delayed', label: '', },
+  { no: 0, value: 'delayed_hour', label: '', },
+  { no: 0, value: 'delayed_cost', label: '', },
+  { no: 0, value: 'remark', label: '', },
+  { no: 0, value: 'book_id', label: '', },
+  { no: 0, value: 'reader_id', label: '', },
 
 ]
 

@@ -1,38 +1,26 @@
 <template>
     <div class="container-part"> <!--//HTML代码、定义页面的区域-->
       <el-form id="form1" class="form-part" :inline="true" :model="formData1"> <!--//定义表ID，表格样式和数据对象，Vue绑定指令-->
-        <el-form-item label="团号" label-width="70">
-          <el-input id="tbx_1e__number" v-model="formData1.tbx_1e__number" placeholder="查询"  MaxLength="20"
-            clearable>
-          </el-input>
+        <el-form-item label="月份" label-width="70"><!--//定义表中的标签，标签的宽度（像素）-->
+          <el-cascader id="ddl_1e__month" v-model="ddl_1e__month" :options="ddlOptions2" clearable />
+          <!--//创建地区选择器，定义ID，v-model将el-cascader和ID进行双向绑定，options将ddlOptions变量和el-cascader绑定，clearable可以进行清除-->
         </el-form-item>
         <el-form-item label="地区" label-width="70">
           <el-cascader id="ddl_1e__district" v-model="ddl_1e__district" :options="ddlOptions" placeholder="欧洲团" clearable />
-        </el-form-item>
-        <el-form-item label="销售" label-width="70">
-          <el-cascader id="ddl_1e__sell" v-model="ddl_1e__cell" :options="ddlOptions5" clearable />
-        </el-form-item>
-        <el-form-item label="操作人" label-width="70">
-          <el-cascader id="ddl_1e__operation" v-model="ddl_1e__operation" :options="ddlOptions3" clearable />
-        </el-form-item>
-        <el-form-item label="领队" label-width="70">
-          <el-cascader id="ddl_1e__guide1" v-model="ddl_1e__guide1" :options="ddlOptions4" clearable />
-        </el-form-item>
-        <el-form-item label="状态" label-width="70">
-          <el-cascader id="ddl_1e__guide" v-model="ddl_1e__guide" :options="ddlOptions1" clearable />
-        </el-form-item>
-        <el-form-item label="航空公司" label-width="70">
-          <el-cascader id="ddl_1e__airport" v-model="ddl_1e__airport" :options="ddlOptions2" clearable />
-        </el-form-item>
-        <el-form-item label="出发日期" label-width="70">
-          <el-input id="tbx_1e__arrivedate" v-model="formData1.tbx_1e__arrivedate" placeholder="查询"  MaxLength="20"
-            clearable>
-          </el-input>
         </el-form-item>
   
         <el-form-item>
           <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">打印列表</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button id="btn_SearchID01" type="primary" @click="onSubmit">导出到EXCEL</el-button>
+        </el-form-item>
+        <!-- <el-form-item>
+          <el-button type="primary" @click="addData">新增数据</el-button>
+        </el-form-item>  -->
       </el-form>
   
       <!--    动态表格  //20231215★★★-->
@@ -41,6 +29,13 @@
           <el-table-column :prop="col.prop" :label="col.label" :width="col.width" v-if="col.isShow"></el-table-column>
         </template> 
   
+        <!--//link type为链接以及风格，@click="borrowHandle(row)"：这是 Vue 的事件绑定语法，将按钮的点击事件与名为 borrowHandle 的方法进行绑定。
+          当用户点击这个 “借阅” 按钮时，会触发 borrowHandle 方法，并且会将当前行的数据对象 row 作为参数传递给该方法，-->
+        <el-table-column fixed="right" label="操作" width="120"><!--//表格列始终固定在右侧-->
+          <template #default="{ row }">
+            <el-button link type="primary" size="small" @click="editHandle(row)">团详情</el-button>
+          </template>
+        </el-table-column>
       </el-table>
   
       <!--//实现分页功能-->
@@ -62,6 +57,7 @@
           </span>
         </template>
       </el-dialog>
+  
     </div>
   </template>
   
@@ -86,22 +82,54 @@
     },
   ]
   
-  const ddlOptions5 = [
+  const ddlOptions2 = [
     {
-      value: '销售1',
-      label: '销售1',
+      value: '12月团',
+      label: '12月团',
     },
     {
-      value: '销售2',
-      label: '销售2',
+      value: '11月团',
+      label: '11月团',
     },
     {
-      value: '销售3',
-      label: '销售3',
+      value: '10月团',
+      label: '10月团',
     },
     {
-      value: '销售4',
-      label: '销售4',
+      value: '9月团',
+      label: '9月团',
+    },
+    {
+      value: '8月团',
+      label: '8月团',
+    },
+    {
+      value: '7月团',
+      label: '7月团',
+    },
+    {
+      value: '6月团',
+      label: '6月团',
+    },
+    {
+      value: '5月团',
+      label: '5月团',
+    },
+    {
+      value: '4月团',
+      label: '4月团',
+    },
+    {
+      value: '3月团',
+      label: '3月团',
+    },
+    {
+      value: '2月团',
+      label: '2月团',
+    },
+    {
+      value: '1月团',
+      label: '1月团',
     },
   ]
   
@@ -125,77 +153,45 @@
   ]
   
   const ddlOptions1 = [
-      {
-        value: '全部团',
-        label: '全部团',
-      },
-      {
-        value: '封团',
-        label: '封团',
-      },
-      {
-        value: '进行中',
-        label: '进行中',
-      },
-    ]
-
-    const ddlOptions2 = [
-      {
-        value: '国航 CA',
-        label: '国航 CA',
-      },
-      {
-        value: '东航 MU',
-        label: '东航 MU',
-      },
-      {
-        value: '南航 CZ',
-        label: '南航 CZ',
-      },
-    ]
-
-    const ddlOptions4 = [
-      {
-        value: '领队1',
-        label: '领队1',
-      },
-      {
-        value: '领队2',
-        label: '领队2',
-      },
-      {
-        value: '领队3',
-        label: '领队3',
-      },
-      {
-        value: '领队4',
-        label: '领队4',
-      },
-    ]
+    {
+      value: '领队1',
+      label: '领队1',
+    },
+    {
+      value: '领队2',
+      label: '领队2',
+    },
+    {
+      value: '领队3',
+      label: '领队3',
+    },
+    {
+      value: '领队4',
+      label: '领队4',
+    },
+    {
+      value: '无领队',
+      label: '无领队',
+    },
+  ]
   
   //ref为响应式应用，定义初始状态下要显示的信息
-  const showCols = ref(['remark', 'Regiment_number', 'intro', 'price', 'market', 'additional_charge','depart','guide', 'operate', 'ticket',
-  'submission_date', 'submission_nation','submission_people', 'seat', 'residue', 'forecast', 'arrived', 'statu',])
+  const showCols = ref(['Regiment_number', 'intro', 'price','additional_charge','depart',
+  'submission_date', 'submission_nation','seat', 'residue','statu','airport1','arrive_date'])
   //prop代表属性名，isShow为布尔值，用于表示初始状态下是否显示
   //数据列  //20231215★★★
   const colOptions = ref([
-    { prop: 'remark', label: '备注', isShow: true, width: '', formatter: '' },
     { prop: 'Regiment_number', label: '团号', isShow: true, width: '', formatter: '' },
+    { prop: 'airport1', label: '航空公司', isShow: true, width: '', formatter: '' },
+    { prop: 'depart', label: '出发地', isShow: true, width: '', formatter: '' },
+    { prop: 'arrive_date', label: '出发日期', isShow: true, width: '', formatter: '' },
     { prop: 'intro', label: '行程简介（团期）', isShow: true, width: '', formatter: '' },
     { prop: 'price', label: '价格', isShow: true, width: '', formatter: '' },
-    { prop: 'market', label: '市场价', isShow: true, width: '', formatter: '' },
     { prop: 'additional_charge', label: '附加费', isShow: true, width: '', formatter: '' },
-    { prop: 'depart', label: '出发地', isShow: true, width: '', formatter: '' },
-    { prop: 'guide', label: '领队', isShow: true, width: '', formatter: '' },
-    { prop: 'operate', label: '操作', isShow: true, width: '', formatter: '' },
-    { prop: 'ticket', label: '票务', isShow: true, width: '', formatter: '' },
     { prop: 'submission_date', label: '送签日', isShow: true, width: '', formatter: '' },
-    { prop: 'submission_nation', label: '送签国', isShow: true, width: '', formatter: '' },
-    { prop: 'submission_people', label: '送签员', isShow: true, width: '', formatter: '' },
+    { prop: 'submission_nation', label: '签证国', isShow: true, width: '', formatter: '' },
     { prop: 'seat', label: '席位', isShow: true, width: '', formatter: '' },
     { prop: 'residue', label: '余位', isShow: true, width: '', formatter: '' },
-    { prop: 'forecast', label: '预报', isShow: true, width: '', formatter: '' },
-    { prop: 'arrived', label: '已到', isShow: true, width: '', formatter: '' },
     { prop: 'status', label: '状态', isShow: true, width: '', formatter: '' },
   ])
   
@@ -302,13 +298,13 @@
   
   const showDialog1 = () => {
   dialogVisible1.value = true;
-  };
-  
+};
+
    const showFileGuide = () => {
      const fileGuideDialog = fileGuideDialog.value;
      fileGuideDialog.showDialog();
    };
-  
+
   const emptyDialogForm = {
     seq: '',
     book_id: '',

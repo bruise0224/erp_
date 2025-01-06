@@ -5,6 +5,10 @@
         <el-input id="txb_1e__user_name" v-model="formData1.txb_1e__user_name" placeholder="模糊查询" MaxLength="20"
                   clearable></el-input>
       </el-form-item>
+      <el-form-item label="账号" label-width="70">
+        <el-input id="txb_1e__account" v-model="formData1.txb_1e__account" placeholder="模糊查询" MaxLength="20"
+                  clearable></el-input>
+      </el-form-item>
 
       <el-form-item>
         <el-button id="btn_SearchID1" type="primary" @click="onSubmit">查询</el-button>
@@ -87,27 +91,27 @@
 import {ref, reactive, onMounted} from "vue";
 import axios from "axios";
 //默认显示列
-const showCols = ref(['user_id', 'user_name', 'password', 'email', 'sex', 'age',])
+const showCols = ref(['user_id', 'user_name', 'password', 'email', 'created_tim',])
 //数据列
 const colOptions = ref([
-  {prop: 'seq', label: 'seq', isShow: false, width: '', formatter: ''},
+  // {prop: 'seq', label: 'seq', isShow: false, width: '', formatter: ''},
   {prop: 'user_id', label: '账号', isShow: true, width: '', formatter: ''},
   {prop: 'user_name', label: '用户名', isShow: true, width: '', formatter: ''},
   {prop: 'password', label: '密码', isShow: true, width: '', formatter: ''},
   {prop: 'email', label: '邮箱', isShow: true, width: '170', formatter: ''},
   {prop: 'phone_num', label: '手机号', isShow: false, width: '', formatter: ''},
-  {prop: 'sex', label: '性别', isShow: true, width: '170', formatter: ''},
+  {prop: 'sex', label: '性别', isShow: false, width: '170', formatter: ''},
   {prop: 'birthday', label: '生日', isShow: false, width: '', formatter: ''},
   {prop: 'address', label: '地址', isShow: false, width: '', formatter: ''},
-  {prop: 'created_time', label: '创建时间', isShow: false, width: '170', formatter: 'formatCellDate'},
+  {prop: 'created_time', label: '创建时间', isShow: true, width: '170', formatter: 'formatCellDate'},
   {prop: 'updated_time', label: '更新时间', isShow: false, width: '', formatter: 'formatCellDate'},
-  {prop: 'age', label: '年龄', isShow: true, width: '', formatter: ''},
-  {prop: 'id', label: '身份证号', isShow: false, width: 'false', formatter: ''},
-  {prop: 'deposit', label: '存款', isShow: false, width: 'false', formatter: ''},
+  // {prop: 'age', label: '年龄', isShow: true, width: '', formatter: ''},
+  // {prop: 'id', label: '身份证号', isShow: false, width: 'false', formatter: ''},
+  // {prop: 'deposit', label: '存款', isShow: false, width: 'false', formatter: ''},
 ])
 //下拉框被备选项  ★★★
 const showColoptions = [
-  {value: 'seq', label: 'seq',},
+  // {value: 'seq', label: 'seq',},
   {value: 'user_id', label: '账号',},
   {value: 'user_name', label: '用户名',},
   {value: 'password', label: '密码',},
@@ -115,12 +119,12 @@ const showColoptions = [
   {value: 'phone_num', label: '手机号',},
   {value: 'sex', label: '性别',},
   {value: 'birthday', label: '生日',},
-  {value: 'address', label: '地址',},
+  // {value: 'address', label: '地址',},
   {value: 'created_time', label: '创建时间',},
   {value: 'updated_time', label: '更新时间',},
-  {value: 'age', label: '年龄',},
-  {value: 'id', label: '身份证号',},
-  {value: 'deposit', label: '存款',},
+  // {value: 'age', label: '年龄',},
+  // {value: 'id', label: '身份证号',},
+  // {value: 'deposit', label: '存款',},
 ]
 //配置显示列★★★
 const hideCol = (value) => {
@@ -145,7 +149,7 @@ onMounted(() => {
 
 const colList = ref(
     [
-      {prop: 'seq', label: 'seq'},
+      // {prop: 'seq', label: 'seq'},
       {prop: 'user_id', label: '账号'},
       {prop: 'user_name', label: '用户名'},
       {prop: 'password', label: '密码'},
@@ -153,21 +157,22 @@ const colList = ref(
       {prop: 'phone_num', label: '手机号'},
       {prop: 'sex', label: '性别'},
       {prop: 'birthday', label: '生日'},
-      {prop: 'address', label: '地址'},
+      // {prop: 'address', label: '地址'},
       {prop: 'created_time', label: '创建时间'},
       {prop: 'updated_time', label: '更新时间'},
-      {prop: 'age', label: '年龄'},
-      {prop: 'id', label: '身份证号'},
-      {prop: 'deposit', label: '存款'},
+      // {prop: 'age', label: '年龄'},
+      // {prop: 'id', label: '身份证号'},
+      // {prop: 'deposit', label: '存款'},
 
     ]
 )
 
 const formData1 = reactive({
   txb_1e__user_name: '',
+  txb_1e__account: '',
 })
 const emptyDialogForm = {
-  seq: '',
+  // seq: '',
   user_id: '',
   user_name: '',
   password: '',
@@ -175,12 +180,12 @@ const emptyDialogForm = {
   phone_num: '',
   sex: '',
   birthday: new Date(),
-  address: '',
+  // address: '',
   created_time: new Date(),
   updated_time: new Date(),
-  age: '',
-  id: '',
-  deposit: '',
+  // age: '',
+  // id: '',
+  // deposit: '',
 
 }
 const dialogForm = ref(emptyDialogForm)
