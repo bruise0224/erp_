@@ -45,7 +45,7 @@
                 <el-icon>
                   <location></location>
                 </el-icon>
-                <template #title>签证表模版</template>
+                <template #title>签证材料打印</template>
               </el-menu-item>
             </el-sub-menu>
 
