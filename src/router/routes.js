@@ -384,6 +384,20 @@ const routers = [
                     },
                 ]
             },
+            {
+                name: '财务审批模块',
+                path: '/my_application',
+                component: () => import('@/views/my_application/my_application.vue'),
+                children: [
+                    ///my_application##路由-文件##
+                    {
+                        name: '我的审批',
+                        path: 'my_application',
+                        component: () => import('@/views/my_application/my_application.vue')
+                    },
+                ]
+            },
+
         ]
     },
 ]

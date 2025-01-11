@@ -141,6 +141,23 @@
             </el-sub-menu>
 
 
+            <el-sub-menu index="/my_application">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>费用申请</span>
+              </template>
+              <el-menu-item index="/my_application/my_application">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>我的审批</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+
 
             <!-- <el-sub-menu index="/BORROW_INFO">
               <template #title>
