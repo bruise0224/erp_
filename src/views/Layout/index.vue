@@ -152,9 +152,20 @@
                 <el-icon>
                   <location></location>
                 </el-icon>
-                <template #title>我的审批</template>
+                <template #title>我的申请</template>
               </el-menu-item>
-              <!--USER_INFO##el-menu-item##-->
+              <el-menu-item index="/my_application/group_expense">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>团支出申请</template>
+              </el-menu-item>
+              <el-menu-item index="/my_application/reimbursement_info">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>报销信息</template>
+              </el-menu-item>
             </el-sub-menu>
 
 

@@ -387,13 +387,25 @@ const routers = [
             {
                 name: '财务审批模块',
                 path: '/my_application',
-                component: () => import('@/views/my_application/my_application.vue'),
+                component: () => import('@/views/my_application/index.vue'),
                 children: [
                     ///my_application##路由-文件##
                     {
-                        name: '我的审批',
+                        name: '我的申请',
                         path: 'my_application',
                         component: () => import('@/views/my_application/my_application.vue')
+                    },
+
+                    {
+                        name: '团支出申请',
+                        path: 'group_expense',
+                        component: () => import('@/views/my_application/group_expense.vue')
+                    },
+
+                    {
+                        name: '报销信息',
+                        path: 'reimbursement_info',
+                        component: () => import('@/views/my_application/reimbursement_info.vue')
                     },
                 ]
             },
