@@ -140,6 +140,53 @@
               <!--USER_INFO##el-menu-item##-->
             </el-sub-menu>
 
+            <el-sub-menu index="/collpay">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>收付款项</span>
+              </template>
+              <el-menu-item index="/collpay/collpay">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>收付款项</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+            <el-sub-menu index="/receipt">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>核算项查询</span>
+              </template>
+              <el-menu-item index="/receipt/receipt">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>查询</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
+
+            <el-sub-menu index="/search">
+              <template #title>
+                <el-icon>
+                  <grid></grid>
+                </el-icon>
+                <span>数据统计</span>
+              </template>
+              <el-menu-item index="/search/search">
+                <el-icon>
+                  <location></location>
+                </el-icon>
+                <template #title>统计</template>
+              </el-menu-item>
+              <!--USER_INFO##el-menu-item##-->
+            </el-sub-menu>
 
             <el-sub-menu index="/my_application">
               <template #title>

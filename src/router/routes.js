@@ -385,6 +385,45 @@ const routers = [
                 ]
             },
             {
+                name: '收付款项模块',
+                path: '/collpay',
+                component: () => import('@/views/collpay/index.vue'),
+                children: [
+                    //USER_INFO##路由-文件##
+                    {
+                        name: '收付款项',
+                        path: 'collpay',
+                        component: () => import('@/views/collpay/collpay.vue')
+                    },
+                ]
+            },
+            {
+                name: '发票审核模块',
+                path: '/receipt',
+                component: () => import('@/views/receipt/index.vue'),
+                children: [
+                    //USER_INFO##路由-文件##
+                    {
+                        name: '发票申请',
+                        path: 'receipt',
+                        component: () => import('@/views/receipt/receipt.vue')
+                    },
+                ]
+            },
+            {
+                name: '数据统计模块',
+                path: '/search',
+                component: () => import('@/views/search/index.vue'),
+                children: [
+                    //USER_INFO##路由-文件##
+                    {
+                        name: '数据统计',
+                        path: 'search',
+                        component: () => import('@/views/search/search.vue')
+                    },
+                ]
+            },
+            {
                 name: '财务审批模块',
                 path: '/my_application',
                 component: () => import('@/views/my_application/index.vue'),
